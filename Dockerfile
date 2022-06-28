@@ -8,13 +8,17 @@ FROM node:18.2.0-alpine3.14 as builder
 # set working directory
 WORKDIR /usr/src/app
 
-# add `usr/src/app/node_modules/.bin` to $PATH
+# add `/usr/src/app/node_modules/.bin` to $PATH
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
 COPY package.json .
 COPY package-lock.json .
 RUN npm ci
+
+# set environment variables
+ARG NODE_ENV
+ENV NODE_ENV $NODE_ENV
 
 # create build
 COPY . .
